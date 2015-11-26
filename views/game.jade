@@ -1,13 +1,14 @@
 extends layout
+
 block content
   section
-    a(href='/games')
+    a(href="/games")
       button.back-to-games << Back to Games
     .container
       ul.game-details
         each value, key in game
           li
-            span(class='caption')=key + ":"
+            span(class="caption")=key + ":"
             if (key === "date")
               - var gamedate = new Date(game.date).toISOString()
               span(class=key)=gamedate.slice(5, 7) + "/" + gamedate.slice(8, 10) + "/" + gamedate.slice(0, 4)
@@ -19,5 +20,5 @@ block content
     button.edit-game Edit
     button.delete-game Delete
 
-  script(type='text/javascript' src='https://code.jquery.com/jquery-2.1.4.min.js')
-  script(type='text/javascript' src='/js/game.js')
+  script(type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js")
+  script(type="text/javascript" src="/js/game.js")

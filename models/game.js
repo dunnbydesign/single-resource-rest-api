@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+
 const gameSchema = new Schema({
   sport: { type: String, required: '{PATH} is required' },
   homeTeam: { type: String, required: '{PATH} is required' },
@@ -11,6 +12,7 @@ const gameSchema = new Schema({
   date: { type: Date, required: '{PATH} is required' },
   played: Boolean
 })
+
 const Game = mongoose.model('Game', gameSchema)
 
 Game.schema.path('homeTeam').validate(value => {

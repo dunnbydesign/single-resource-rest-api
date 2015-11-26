@@ -1,71 +1,48 @@
 'use strict'
 
 const express = require('express')
+const passport = require('passport')
 
-const Game = require('../models/game')
+const Account = require('../models/account')
 const router = express.Router()
 
-let renderGames = (req, res) => {
-  Game.find({}, (error, results) => {
-    if (error) throw error
-    res.render('index', { games: results })
-  })
-}
-
-let respondWithErrors = (err, res) => {
-  if (err) {
-    let message = {}
-    message.header = err.message
-    message.errors = []
-    for (let key in err.errors) {
-      message.errors.push(err.errors[key].message)
-    }
-    res.send(message)
-  } else res.end()
-}
-
-let createDocument = source => {
-  let doc = {}
-  if (source._id) doc._id = source._id
-  const keys = [ 'sport', 'homeTeam', 'awayTeam', 'homeScore', 'awayScore', 'date', 'played' ]
-  keys.forEach(element => {
-    doc[element] = source[element]
-  })
-
-  return doc
-}
-
-router.get('/games', (req, res, next) => {
-  renderGames(req, res)
+router.get('/', (req, res) => {
+  res.render('index', { title: 'SportsCentre', user: req.user })
 })
 
-router.get('/games/:id', (req, res, next) => {
-  Game.findOne({ _id: req.params.id }, (err, results) => {
-    if (err) throw err
-    let game = createDocument(results)
-    res.render('game', { game })
+router.get('/login', (req, res) => {
+  if (req.user) res.redirect('/')
+  else res.render('login', { title: 'SportsCentre' })
+})
+
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) return next(err)
+    if (!user) return res.render('login', { title: 'SportsCentre', message: info.message })
+    req.login(user, err => {
+      if (err) return next(err)
+      return res.redirect('/')
+    })
+  })(req, res, next)
+})
+
+router.get('/register', (req, res) => {
+  if (req.user) res.redirect('/')
+  else res.render('register', { title: 'SportsCentre' })
+})
+
+router.post('/register', (req, res) => {
+  Account.register(new Account({ username: req.body.username }), req.body.password, err => {
+    if (err) return res.render('register', { title: 'SportsCentre', message: err.message })
+    passport.authenticate('local')(req, res, () => {
+      res.redirect('/')
+    })
   })
 })
 
-router.post('/games', (req, res, next) => {
-  let game = new Game(createDocument(req.body))
-  game.save(err => {
-    respondWithErrors(err, res)
-  })
-})
-
-router.put('/games/:id', (req, res, next) => {
-  let updatedDoc = createDocument(req.body)
-  Game.update({ _id: req.params.id }, updatedDoc, { runValidators: true }, err => {
-    respondWithErrors(err, res)
-  })
-})
-
-router.delete('/games/:id', (req, res, next) => {
-  Game.findByIdAndRemove(req.params.id, err => {
-    if (err) throw err
-    res.end()
-  })
+router.get('/logout', (req, res) => {
+  if (req.user) req.logout()
+  res.redirect('/')
 })
 
 module.exports = router

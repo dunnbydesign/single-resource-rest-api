@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  section
+    h2 Register
+    .container
+      form(action="/register" method="POST")
+        div
+          label(for="username") User Name:
+          input(type="text" name="username")
+
+        div
+          label(for="password") Password:
+          input(type="password" name="password")
+
+        div
+          button(type="submit") Register
+
+    p #{message}
