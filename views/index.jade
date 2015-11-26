@@ -1,0 +1,59 @@
+extends layout
+
+block content
+  section
+    h2 Add Game
+    .container.add-game
+      form
+        div
+          label(for="sport") Sport:
+          select(name="sport")
+            option(value="" selected disabled) Select a sport
+            option(value="Basketball") Basketball
+            option(value="Football") Football
+            option(value="Baseball") Baseball
+            option(value="Soccer") Soccer
+            option(value="Hockey") Hockey
+        
+        div
+          label(for="homeTeam") Home Team:
+          input(type="text" name="homeTeam")
+        
+        div
+          label(for="awayTeam") Away Team:
+          input(type="text" name="awayTeam")
+        
+        div
+          label(for="homeScore") Home Score:
+          input(type="number" min=0 name="homeScore" value=0)
+        
+        div
+          label(for="awayScore") Away Score:
+          input(type="number" min=0 name="awayScore" value=0)
+        
+        div
+          label(for="date") Date:
+          input(type="date" name="date")
+        
+        div
+          label(for="played") Game Over?
+          span No
+          input(type="radio" name="played" value="false" checked)
+          span Yes
+          input(type="radio" name="played" value="true")
+
+        div
+          button.save-game(type="button") Submit
+
+  section
+    h2 All Games
+    .container
+      ul.game-list
+        each game in games
+          - var gamedate = new Date(game.date).toISOString()
+          li
+            a(href="/games/" + game._id)=gamedate.slice(5, 7) + "/" + gamedate.slice(8, 10) + "/" + gamedate.slice(0, 4) + ": " + game.awayTeam + " vs. " + game.homeTeam
+            button.delete-game(data-id='#{game._id}') Delete
+
+  script(type='text/javascript' src='https://code.jquery.com/jquery-2.1.4.min.js')
+  script(type='text/javascript' src='/js/games.js')

@@ -1,0 +1,63 @@
+/* Global Styles */
+
+section {
+  width: 50%;
+  margin: 2rem auto;
+}
+
+select, input {
+  margin-left: 1rem;
+}
+
+span {
+  margin-left: 0.75rem;
+}
+
+button {
+  width: 4rem;
+  margin-top: 0.5rem;
+}
+
+
+/* Custom Styles */
+
+.err-stack {
+  background-color: #ccc;
+  border: 1px solid black;
+  padding: 1rem;
+}
+
+.container {
+  background-color: #F2A262;
+  padding: 15px;
+}
+
+button.delete-game, button.cancel-changes {
+  margin-left: 0.5rem;
+}
+
+button.back-to-games {
+  width: 8rem;
+  margin-bottom: 0.5rem;
+}
+
+button.save-changes {
+  width: 7rem;
+}
+
+.game-list {
+  list-style-type: decimal-leading-zero;
+}
+
+.game-list li {
+  margin-bottom: 0.75rem;
+}
+
+.game-details {
+  list-style-type: none;
+  padding: 0;
+}
+
+.game-details li span.caption {
+  margin: 0;
+}
