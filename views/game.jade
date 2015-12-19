@@ -1,9 +1,17 @@
 extends layout
 
 block content
+  header
+    nav
+      ul
+        li
+          a(href="/") Home
+        li
+          a(href="/games") Games
+        li
+          a(href="/logout") Log Out
+
   section
-    a(href="/games")
-      button.back-to-games << Back to Games
     .container
       ul.game-details
         each value, key in game
